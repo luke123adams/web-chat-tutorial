@@ -2,8 +2,37 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Col, Container, Row } from 'react-bootstrap'
 import WaitingRoom from './components/waitingRoom';
+import { useState } from 'react';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 
 function App() {
+  const [conn, setConnection] = useState();
+
+  const joinChatRoom = async (username, chatroom) => {
+
+    try {
+      // initiate a connection
+
+      const conn = HubConnectionBuilder()
+      .withUrl("http://localhost:3000")
+      .configureLogging(LogLevel.Information)
+      .build();
+
+      // set up handler
+      conn.on("JoinSpecificChatRoom", (username, msg) => {
+        console.log("msg: ", msg);
+      });
+
+    
+      await conn.start();
+      await conn.invoke("JoinSpecificChatroom", {username, chatroom});
+
+      setConnection(conn);
+
+    } catch(e) {
+      console.log(e);
+    }
+  }
   return (
     <div>
       <main>
@@ -13,7 +42,7 @@ function App() {
             <h1 className='font-weight-light'>Luke's EXTREME webchat</h1>
           </Col>
         </Row>
-        <WaitingRoom></WaitingRoom>
+        <WaitingRoom joinChatRoom={joinChatRoom}></WaitingRoom>
 
         </Container>
       </main>
