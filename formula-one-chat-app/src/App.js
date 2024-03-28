@@ -13,8 +13,8 @@ function App() {
     try {
       // initiate a connection
 
-      const conn = HubConnectionBuilder()
-      .withUrl("http://localhost:3000")
+      const conn = new HubConnectionBuilder()
+      .withUrl("http://localhost:5157/chat")
       .configureLogging(LogLevel.Information)
       .build();
 
@@ -25,7 +25,7 @@ function App() {
 
     
       await conn.start();
-      await conn.invoke("JoinSpecificChatroom", {username, chatroom});
+      await conn.invoke("JoinSpecificChatRoom", {username, chatroom});
 
       setConnection(conn);
 

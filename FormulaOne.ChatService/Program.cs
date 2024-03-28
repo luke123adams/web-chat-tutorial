@@ -10,13 +10,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(CorsOptions => 
+builder.Services.AddCors(opt => 
 {
-    CorsOptions.AddPolicy(name:"react-app", configurePolicy:builder =>
+    opt.AddPolicy(name:"react-app", configurePolicy:builder =>
     {
-         builder.WithOrigins("http:/localhost:3000/")
+         builder.WithOrigins("http://localhost:3000")
          .AllowAnyHeader()
-         .AllowAnyMethod();
+         .AllowAnyMethod()
+         .AllowCredentials();
 
     });
 });
@@ -30,14 +31,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ChatHub>(pattern:"/Chat");
+app.MapHub<ChatHub>(pattern:"/chat");
 
-app.UseCors("ReactApp");
+app.UseCors("react-app");
 
 app.Run();
