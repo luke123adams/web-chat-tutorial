@@ -1,0 +1,19 @@
+import React from 'react'
+
+const MessageContainer = ({messages}) =>
+  
+    <div>
+    
+    {messages.map((msg, index) => 
+    <table striped bordered>
+        <tr key={index}>
+            <td>
+                {msg.msg} - {msg.username}
+            </td>
+        </tr>
+    </table>)}
+    </div>
+  
+
+
+export default MessageContainer

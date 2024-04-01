@@ -1,3 +1,4 @@
+using FormulaOne.ChatService.DataService;
 using FormulaOne.ChatService.Hubs;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
@@ -14,13 +15,15 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy(name:"react-app", configurePolicy:builder =>
     {
-         builder.WithOrigins("http://localhost:3000")
+         builder.WithOrigins("http://localhost:3000","http://localhost:3001")
          .AllowAnyHeader()
          .AllowAnyMethod()
          .AllowCredentials();
 
     });
 });
+
+builder.Services.AddSingleton<SharedDb>();
 
 var app = builder.Build();
 
